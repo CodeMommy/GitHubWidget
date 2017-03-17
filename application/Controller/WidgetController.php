@@ -32,6 +32,9 @@ class WidgetController extends BaseController
      */
     public function members()
     {
+        $data = array();
+        $avatarSize = Input::get('avatar_size', 80);
+        $data['avatarSize'] = intval($avatarSize);
         $user  = Input::get('user', '');
         $server = new GitHubPHP();
         $server->setURL($user);
@@ -43,7 +46,7 @@ class WidgetController extends BaseController
             }
             return $result;
         });
-        $data = array();
+
         $data['members'] = $members['data'];
         return Output::template('widget/members', $data);
     }

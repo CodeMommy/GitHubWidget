@@ -30,12 +30,12 @@
             }
 
             .avatar img {
-                width: 80px;
-                height: 80px;
+                width: {$avatarSize}px;
+                height: {$avatarSize}px;
             }
 
             .name {
-                width: 80px;
+                width: {$avatarSize}px;
                 height: 20px;
                 overflow: hidden;
                 margin-top: 5px;
