@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * CodeMommy GitHub Widget
+ * @author  Candison November <www.kandisheng.com>
+ */
+
+namespace Controller;
+
+use CodeMommy\WebPHP\Input;
+use CodeMommy\WebPHP\Output;
+use Core\GitHub;
+use Core\CacheTool;
+
+/**
+ * Class HomeController
+ * @package Controller
+ */
+class WidgetController extends BaseController
+{
+    const CACHE = 'http://cache.shareany.com/?f=';
+    /**
+     * HomeController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * @return bool
+     */
+    public function members()
+    {
+        $user  = Input::get('user', '');
+        $server = new GitHub();
+        $server->setURL($user);
+        $cacheKey = sprintf('members.%s', $server->getUser());
+        $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
+            $result = $server->getMembers();
+            foreach($result['data'] as &$value){
+                $value['avatar'] = sprintf('%s%s', self::CACHE, $value['avatar']);
+            }
+            return $result;
+        });
+        $data = array();
+        $data['members'] = $members['data'];
+        return Output::template('widget/members', $data);
+    }
+}
