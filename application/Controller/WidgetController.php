@@ -9,7 +9,7 @@ namespace Controller;
 
 use CodeMommy\WebPHP\Input;
 use CodeMommy\WebPHP\Output;
-use Core\GitHub;
+use CodeMommy\GitHubPHP;
 use Core\CacheTool;
 
 /**
@@ -33,7 +33,7 @@ class WidgetController extends BaseController
     public function members()
     {
         $user  = Input::get('user', '');
-        $server = new GitHub();
+        $server = new GitHubPHP();
         $server->setURL($user);
         $cacheKey = sprintf('members.%s', $server->getUser());
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
