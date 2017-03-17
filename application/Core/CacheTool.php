@@ -12,7 +12,7 @@ use CodeMommy\WebPHP\Cache;
 class CacheTool
 {
     const TIME_ONE_DAY = 3600 * 24;
-    const CACHE_ROOT   = 'GitHubWidget';
+    const CACHE_ROOT   = 'CodeMommy.GitHubWidget';
 
     public static function cache($key, $timeOut, $function)
     {
