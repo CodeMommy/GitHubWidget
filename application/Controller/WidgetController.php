@@ -51,14 +51,21 @@ class WidgetController extends BaseController
             return $result;
         });
         $data['members'] = $members['data']['data'];
-        return Output::template('widget/members', $data);
+        $callBack = Input::get('callback', '');
+        if (empty($callBack)) {
+            return Output::template('widget/members', $data);
+        } else {
+            echo sprintf('%s(%s)', $callBack, json_encode($data));
+            return true;
+        }
     }
 
     /**
      * Members
      * @return bool
      */
-    public function user()
+    public
+    function user()
     {
         $data = array();
         $avatarSize = Input::get('avatar_size', 64);
@@ -75,6 +82,12 @@ class WidgetController extends BaseController
             return $result;
         });
         $data['user'] = $members['data']['data'];
-        return Output::template('widget/user', $data);
+        $callBack = Input::get('callback', '');
+        if (empty($callBack)) {
+            return Output::template('widget/user', $data);
+        } else {
+            echo sprintf('%s(%s)', $callBack, json_encode($data));
+            return true;
+        }
     }
 }
