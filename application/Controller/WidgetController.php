@@ -18,7 +18,7 @@ use Core\CacheTool;
  */
 class WidgetController extends BaseController
 {
-    const CACHE = 'http://cache.shareany.com/?f=';
+//    const CACHE = 'http://cache.shareany.com/?f=';
 
     /**
      * HomeController constructor.
@@ -43,11 +43,11 @@ class WidgetController extends BaseController
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
             $result = $server->getMembers();
-            if ($result['status'] == true) {
-                foreach ($result['data']['data'] as &$value) {
-                    $value['avatar'] = sprintf('%s%s', self::CACHE, $value['avatar']);
-                }
-            }
+//            if ($result['status'] == true) {
+//                foreach ($result['data']['data'] as &$value) {
+//                    $value['avatar'] = sprintf('%s%s', self::CACHE, $value['avatar']);
+//                }
+//            }
             return $result;
         });
         $data['members'] = $members['data']['data'];
@@ -55,7 +55,7 @@ class WidgetController extends BaseController
         if (empty($callBack)) {
             return Output::template('widget/members', $data);
         } else {
-            echo sprintf('%s(%s)', $callBack, json_encode($data));
+            echo sprintf('%s(%s)', $callBack, json_encode($data['members']));
             return true;
         }
     }
@@ -76,9 +76,9 @@ class WidgetController extends BaseController
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
             $result = $server->getUserInformation();
-            if ($result['status'] == true) {
-                $result['data']['data']['avatar'] = sprintf('%s%s', self::CACHE, $result['data']['data']['avatar']);
-            }
+//            if ($result['status'] == true) {
+//                $result['data']['data']['avatar'] = sprintf('%s%s', self::CACHE, $result['data']['data']['avatar']);
+//            }
             return $result;
         });
         $data['user'] = $members['data']['data'];
@@ -86,7 +86,7 @@ class WidgetController extends BaseController
         if (empty($callBack)) {
             return Output::template('widget/user', $data);
         } else {
-            echo sprintf('%s(%s)', $callBack, json_encode($data));
+            echo sprintf('%s(%s)', $callBack, json_encode($data['user']));
             return true;
         }
     }

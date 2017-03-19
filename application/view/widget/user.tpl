@@ -3,7 +3,7 @@
     <div class="media">
         <div class="media-left">
             <a href="{$user['url']}" title="{$user['name']}" target="_blank">
-                <img class="media-object" src="{$user['avatar']}" alt="{$user['name']}">
+                <img class="media-object" src="//cache.shareany.com/?f={$user['avatar']}" alt="{$user['name']}">
             </a>
         </div>
         <div class="media-body">
