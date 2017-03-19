@@ -19,6 +19,7 @@ use Core\CacheTool;
 class WidgetController extends BaseController
 {
 //    const CACHE = 'http://cache.shareany.com/?f=';
+    const CACHE_VERSION = 1;
 
     /**
      * HomeController constructor.
@@ -40,7 +41,7 @@ class WidgetController extends BaseController
         $user = Input::get('user', '');
         $server = new GitHubPHP();
         $server->setURL($user);
-        $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
+        $cacheKey = sprintf('%s.%s.%s', __FUNCTION__, $server->getUser(), self::CACHE_VERSION);
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
             $result = $server->getMembers();
 //            if ($result['status'] == true) {
@@ -73,7 +74,7 @@ class WidgetController extends BaseController
         $user = Input::get('user', '');
         $server = new GitHubPHP();
         $server->setURL($user);
-        $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
+        $cacheKey = sprintf('%s.%s.%s', __FUNCTION__, $server->getUser(), self::CACHE_VERSION);
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
             $result = $server->getUserInformation();
 //            if ($result['status'] == true) {
