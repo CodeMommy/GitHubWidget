@@ -21,6 +21,7 @@
     {block name=header}{/block}
 </head>
 <body>
-{block name=main}{/block}
+{block name=body}{/block}
+{block name=footer}{/block}
 </body>
 </html>

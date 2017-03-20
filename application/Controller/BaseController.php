@@ -10,7 +10,6 @@ namespace Controller;
 use CodeMommy\WebPHP\Controller;
 use CodeMommy\WebPHP\Output;
 use CodeMommy\WebPHP\Config;
-use CodeMommy\WebPHP\Input;
 use CodeMommy\WebPHP\Me;
 
 /**
@@ -45,34 +44,10 @@ class BaseController extends Controller
         }
         $this->data['root'] = Me::root();
         $this->data['cache'] = Config::get('application.cache');
-        $this->data['static'] = $this->data['root'] . 'static';
+        $this->data['static'] = sprintf('%s%s', $this->data['root'] . Config::get('application.static'));
         if (in_array(Me::domain(), array(Config::get('application.domain')))) {
-            $this->data['static'] = sprintf('%shttp://%s/static', $this->data['cache'], Me::domain());
+            $this->data['static'] = sprintf('%shttp://%s/%s', $this->data['cache'], Me::domain(), Config::get('application.static'));
         }
         return Output::template($view, $this->data);
-    }
-
-    /**
-     * @param $data
-     *
-     * @return bool
-     */
-    public function jsonP($data)
-    {
-        $callBack = Input::get('callback', '');
-        echo sprintf('%s(%s)', $callBack, json_encode($data));
-        return true;
-    }
-
-    /**
-     * Is JsonP
-     * @return bool
-     */
-    public function isJsonP()
-    {
-        if (empty(Input::get('callback', ''))) {
-            return false;
-        }
-        return true;
     }
 }

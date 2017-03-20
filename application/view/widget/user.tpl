@@ -1,5 +1,5 @@
-{extends file='../base/widget_base.tpl'}
-{block name=main}
+{extends file='../base/widget.tpl'}
+{block name=body}
     <div class="media">
         <div class="media-left">
             <a href="{$user['url']}" title="{$user['name']}" target="_blank">

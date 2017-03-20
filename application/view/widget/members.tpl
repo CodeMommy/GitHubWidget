@@ -1,5 +1,5 @@
-{extends file='../base/widget_base.tpl'}
-{block name=main}
+{extends file='../base/widget.tpl'}
+{block name=body}
     <ul>
         {foreach from=$members item=member}
             <li>
