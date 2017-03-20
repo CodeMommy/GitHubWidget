@@ -5,7 +5,7 @@
             <li>
                 <div class="avatar">
                     <a href="{$member['url']}" target="_blank" title="{$member['name']}">
-                        <img src="//cache.shareany.com/?f={$member['avatar']}" alt="{$member['name']}">
+                        <img src="{$cache}{$member['avatar']}" alt="{$member['name']}">
                     </a>
                 </div>
                 <div class="name">

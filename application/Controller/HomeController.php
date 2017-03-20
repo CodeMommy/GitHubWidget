@@ -7,8 +7,6 @@
 
 namespace Controller;
 
-use CodeMommy\WebPHP\Output;
-
 /**
  * Class HomeController
  * @package Controller
@@ -28,6 +26,6 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        return Output::template('home/index', array());
+        return $this->template('home/index');
     }
 }

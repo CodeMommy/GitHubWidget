@@ -9,6 +9,8 @@ namespace Controller;
 
 use CodeMommy\WebPHP\Controller;
 use CodeMommy\WebPHP\Output;
+use CodeMommy\WebPHP\Config;
+use CodeMommy\WebPHP\Input;
 use CodeMommy\WebPHP\Me;
 
 /**
@@ -17,8 +19,7 @@ use CodeMommy\WebPHP\Me;
  */
 class BaseController extends Controller
 {
-    protected $data   = null;
-    protected $option = null;
+    protected $data = null;
 
     /**
      * BaseController constructor.
@@ -26,7 +27,7 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->data = array();
-        $this->option = array();
+        $this->data['title'] = '';
     }
 
     /**
@@ -36,20 +37,42 @@ class BaseController extends Controller
      */
     public function template($view)
     {
-        foreach ($this->option as $key => $value) {
-            $this->data[$key] = $value;
-        }
+        $siteTitle = Config::get('application.title');
         if (empty($this->data['title'])) {
-            $this->data['title'] = '';
+            $this->data['title'] = $siteTitle;
         } else {
-            $this->data['title'] .= ' - ';
+            $this->data['title'] .= ' - ' . $siteTitle;
         }
         $this->data['root'] = Me::root();
-        if (Me::domain() == 'github.shareany.com') {
-            $this->data['static'] = 'http://static.shareany.com/product/github';
-        } else {
-            $this->data['static'] = Me::root() . 'static';
+        $this->data['cache'] = Config::get('application.cache');
+        $this->data['static'] = $this->data['root'] . 'static';
+        if (in_array(Me::domain(), array(Config::get('application.domain')))) {
+            $this->data['static'] = sprintf('%shttp://%s/static', $this->data['cache'], Me::domain());
         }
         return Output::template($view, $this->data);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
+    public function jsonP($data)
+    {
+        $callBack = Input::get('callback', '');
+        echo sprintf('%s(%s)', $callBack, json_encode($data));
+        return true;
+    }
+
+    /**
+     * Is JsonP
+     * @return bool
+     */
+    public function isJsonP()
+    {
+        if (empty(Input::get('callback', ''))) {
+            return false;
+        }
+        return true;
     }
 }

@@ -8,7 +8,6 @@
 namespace Controller;
 
 use CodeMommy\WebPHP\Input;
-use CodeMommy\WebPHP\Output;
 use CodeMommy\GitHubPHP;
 use Core\CacheTool;
 
@@ -18,7 +17,6 @@ use Core\CacheTool;
  */
 class WidgetController extends BaseController
 {
-//    const CACHE = 'http://cache.shareany.com/?f=';
     const CACHE_VERSION = 1;
 
     /**
@@ -35,60 +33,41 @@ class WidgetController extends BaseController
      */
     public function members()
     {
-        $data = array();
         $avatarSize = Input::get('avatar_size', 100);
-        $data['avatarSize'] = intval($avatarSize);
+        $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
         $server = new GitHubPHP();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s.%s', __FUNCTION__, $server->getUser(), self::CACHE_VERSION);
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
-            $result = $server->getMembers();
-//            if ($result['status'] == true) {
-//                foreach ($result['data']['data'] as &$value) {
-//                    $value['avatar'] = sprintf('%s%s', self::CACHE, $value['avatar']);
-//                }
-//            }
-            return $result;
+            return $server->getMembers();
         });
-        $data['members'] = $members['data']['data'];
-        $callBack = Input::get('callback', '');
-        if (empty($callBack)) {
-            return Output::template('widget/members', $data);
-        } else {
-            echo sprintf('%s(%s)', $callBack, json_encode($data['members']));
-            return true;
+        $this->data['members'] = $members['data']['data'];
+        if ($this->isJsonP()) {
+            return $this->jsonP($this->data['members']);
         }
+        return $this->template('widget/members');
     }
 
     /**
      * Members
      * @return bool
      */
-    public
-    function user()
+    public function user()
     {
-        $data = array();
         $avatarSize = Input::get('avatar_size', 64);
-        $data['avatarSize'] = intval($avatarSize);
+        $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
         $server = new GitHubPHP();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s.%s', __FUNCTION__, $server->getUser(), self::CACHE_VERSION);
         $members = CacheTool::cache($cacheKey, CacheTool::TIME_ONE_DAY, function () use ($server) {
-            $result = $server->getUserInformation();
-//            if ($result['status'] == true) {
-//                $result['data']['data']['avatar'] = sprintf('%s%s', self::CACHE, $result['data']['data']['avatar']);
-//            }
-            return $result;
+            return $server->getUserInformation();
         });
-        $data['user'] = $members['data']['data'];
-        $callBack = Input::get('callback', '');
-        if (empty($callBack)) {
-            return Output::template('widget/user', $data);
-        } else {
-            echo sprintf('%s(%s)', $callBack, json_encode($data['user']));
-            return true;
+        $this->data['user'] = $members['data']['data'];
+        if ($this->isJsonP()) {
+            return $this->jsonP($this->data['user']);
         }
+        return $this->template('widget/user');
     }
 }
