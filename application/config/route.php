@@ -6,9 +6,10 @@ return array(
     // Route Configure
     // any, get, post...
     'get'  => array(
-        ''                      => 'HomeController.index',
-        'widget/members/{user}' => 'WidgetController.members',
-        'widget/user/{user}'    => 'WidgetController.user',
+        '' => 'HomeController.index'
     ),
-    'any'  => array()
+    'any'  => array(
+        'widget/members/{user}' => 'WidgetController.members',
+        'widget/user/{user}'    => 'WidgetController.user'
+    )
 );

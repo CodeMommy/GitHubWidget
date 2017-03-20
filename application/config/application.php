@@ -9,5 +9,5 @@ return array(
     'cache'        => '//cache.shareany.com/?f=',
     'cacheRootKey' => 'CodeMommy.GitHubWidget',
     'cacheVersion' => 1,
-    'debug'        => true
+    'debug'        => false
 );
