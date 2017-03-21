@@ -8,6 +8,7 @@
 namespace Controller;
 
 use CodeMommy\WebPHP\Input;
+use CodeMommy\WebPHP\Config;
 use CodeMommy\GitHubPHP;
 use System\Cache;
 use System\JsonP;
@@ -19,6 +20,7 @@ use System\Json;
  */
 class WidgetController extends BaseController
 {
+    private $server = null;
 
     /**
      * HomeController constructor.
@@ -26,6 +28,21 @@ class WidgetController extends BaseController
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Get GitHub Server
+     * @return GitHubPHP|null
+     */
+    private function getGitHubServer()
+    {
+        if ($this->server == null) {
+            $this->server = new GitHubPHP();
+            $this->server->setSize(Config::get('application.size', 1000));
+            $this->server->setClientID(Config::get('application.clientID', ''));
+            $this->server->setClientSecret(Config::get('application.clientSecret', ''));
+        }
+        return $this->server;
     }
 
     /**
@@ -38,7 +55,7 @@ class WidgetController extends BaseController
         $avatarSize = Input::get('avatar_size', 64);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
-        $server = new GitHubPHP();
+        $server = $this->getGitHubServer();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
@@ -64,7 +81,7 @@ class WidgetController extends BaseController
         $avatarSize = Input::get('avatar_size', 100);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
-        $server = new GitHubPHP();
+        $server = $this->getGitHubServer();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
@@ -90,7 +107,7 @@ class WidgetController extends BaseController
         $avatarSize = Input::get('avatar_size', 64);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
-        $server = new GitHubPHP();
+        $server = $this->getGitHubServer();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
@@ -116,7 +133,7 @@ class WidgetController extends BaseController
         $avatarSize = Input::get('avatar_size', 64);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
-        $server = new GitHubPHP();
+        $server = $this->getGitHubServer();
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
