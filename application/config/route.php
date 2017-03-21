@@ -9,8 +9,9 @@ return array(
         '' => 'HomeController.index'
     ),
     'any'  => array(
-        'widget/members/{user}' => 'WidgetController.members',
-        'widget/user/{user}'    => 'WidgetController.user',
-        'widget/events/{user}'  => 'WidgetController.events'
+        'widget/user/information/{user}'         => 'WidgetController.userInformation',
+        'widget/organization/members/{user}'     => 'WidgetController.organizationMembers',
+        'widget/organization/information/{user}' => 'WidgetController.organizationInformation',
+        'widget/organization/events/{user}'      => 'WidgetController.organizationEvents'
     )
 );

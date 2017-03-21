@@ -29,12 +29,38 @@ class WidgetController extends BaseController
     }
 
     /**
-     * Members
+     * User Information
      * @return bool
      */
-    public function members()
+    public function userInformation()
     {
-        $this->data['title'] = 'Members';
+        $this->data['title'] = 'User Information';
+        $avatarSize = Input::get('avatar_size', 64);
+        $this->data['avatarSize'] = intval($avatarSize);
+        $user = Input::get('user', '');
+        $server = new GitHubPHP();
+        $server->setURL($user);
+        $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
+        $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
+            return $server->getOrganizationInformation();
+        });
+        $this->data['data'] = $members['data']['data'];
+        if (Json::isJson()) {
+            return Json::show($this->data['data']);
+        }
+        if (JsonP::isJsonP()) {
+            return JsonP::show($this->data['data']);
+        }
+        return $this->template('widget/userInformation');
+    }
+
+    /**
+     * Organization Members
+     * @return bool
+     */
+    public function organizationMembers()
+    {
+        $this->data['title'] = 'Organization Members';
         $avatarSize = Input::get('avatar_size', 100);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
@@ -42,25 +68,25 @@ class WidgetController extends BaseController
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
-            return $server->getMembers();
+            return $server->getOrganizationMembers();
         });
-        $this->data['members'] = $members['data']['data'];
+        $this->data['data'] = $members['data']['data'];
         if (Json::isJson()) {
-            return Json::show($this->data['members']);
+            return Json::show($this->data['data']);
         }
         if (JsonP::isJsonP()) {
-            return JsonP::show($this->data['members']);
+            return JsonP::show($this->data['data']);
         }
-        return $this->template('widget/members');
+        return $this->template('widget/organizationMembers');
     }
 
     /**
-     * User
+     * Organization Information
      * @return bool
      */
-    public function user()
+    public function organizationInformation()
     {
-        $this->data['title'] = 'User';
+        $this->data['title'] = 'Organization Information';
         $avatarSize = Input::get('avatar_size', 64);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
@@ -68,25 +94,25 @@ class WidgetController extends BaseController
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
-            return $server->getUserInformation();
+            return $server->getOrganizationInformation();
         });
-        $this->data['user'] = $members['data']['data'];
+        $this->data['data'] = $members['data']['data'];
         if (Json::isJson()) {
-            return Json::show($this->data['user']);
+            return Json::show($this->data['data']);
         }
         if (JsonP::isJsonP()) {
-            return JsonP::show($this->data['user']);
+            return JsonP::show($this->data['data']);
         }
-        return $this->template('widget/user');
+        return $this->template('widget/organizationInformation');
     }
 
     /**
-     * Events
+     * Organization Events
      * @return bool
      */
-    public function events()
+    public function organizationEvents()
     {
-        $this->data['title'] = 'Events';
+        $this->data['title'] = 'Organization Events';
         $avatarSize = Input::get('avatar_size', 64);
         $this->data['avatarSize'] = intval($avatarSize);
         $user = Input::get('user', '');
@@ -94,15 +120,15 @@ class WidgetController extends BaseController
         $server->setURL($user);
         $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
         $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
-            return $server->getEvents();
+            return $server->getOrganizationEvents();
         });
-        $this->data['events'] = $members['data']['data'];
+        $this->data['data'] = $members['data']['data'];
         if (Json::isJson()) {
-            return Json::show($this->data['events']);
+            return Json::show($this->data['data']);
         }
         if (JsonP::isJsonP()) {
-            return JsonP::show($this->data['events']);
+            return JsonP::show($this->data['data']);
         }
-        return $this->template('widget/events');
+        return $this->template('widget/organizationEvents');
     }
 }

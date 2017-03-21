@@ -2,15 +2,15 @@
 {block name=body}
     <div class="media">
         <div class="media-left">
-            <a href="{$user['url']}" title="{$user['name']}" target="_blank">
-                <img class="media-object" src="{$cache}{$user['avatar']}" alt="{$user['name']}">
+            <a href="{$data['url']}" title="{$data['name']}" target="_blank">
+                <img class="media-object" src="{$cache}{$data['avatar']}" alt="{$data['name']}">
             </a>
         </div>
         <div class="media-body">
-            <a href="{$user['url']}" title="{$user['name']}" target="_blank">
-                <h4 class="media-heading">{$user['name']}</h4>
+            <a href="{$data['url']}" title="{$data['name']}" target="_blank">
+                <h4 class="media-heading">{$data['name']}</h4>
             </a>
-            {$user['about']}
+            {$data['about']}
         </div>
     </div>
 {/block}

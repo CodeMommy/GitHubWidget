@@ -1,7 +1,7 @@
 {extends file='../base/widget.tpl'}
 {block name=body}
     <ul>
-        {foreach from=$members item=member}
+        {foreach from=$data item=member}
             <li>
                 <div class="avatar">
                     <a href="{$member['url']}" target="_blank" title="{$member['name']}">
