@@ -10,6 +10,7 @@ return array(
     ),
     'any'  => array(
         'widget/members/{user}' => 'WidgetController.members',
-        'widget/user/{user}'    => 'WidgetController.user'
+        'widget/user/{user}'    => 'WidgetController.user',
+        'widget/events/{user}'  => 'WidgetController.events'
     )
 );

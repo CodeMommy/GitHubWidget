@@ -55,7 +55,7 @@ class WidgetController extends BaseController
     }
 
     /**
-     * Members
+     * User
      * @return bool
      */
     public function user()
@@ -78,5 +78,31 @@ class WidgetController extends BaseController
             return JsonP::show($this->data['user']);
         }
         return $this->template('widget/user');
+    }
+
+    /**
+     * Events
+     * @return bool
+     */
+    public function events()
+    {
+        $this->data['title'] = 'Events';
+        $avatarSize = Input::get('avatar_size', 64);
+        $this->data['avatarSize'] = intval($avatarSize);
+        $user = Input::get('user', '');
+        $server = new GitHubPHP();
+        $server->setURL($user);
+        $cacheKey = sprintf('%s.%s', __FUNCTION__, $server->getUser());
+        $members = Cache::cache($cacheKey, Cache::TIME_ONE_DAY, function () use ($server) {
+            return $server->getEvents();
+        });
+        $this->data['events'] = $members['data']['data'];
+        if (Json::isJson()) {
+            return Json::show($this->data['events']);
+        }
+        if (JsonP::isJsonP()) {
+            return JsonP::show($this->data['events']);
+        }
+        return $this->template('widget/events');
     }
 }
