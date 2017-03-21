@@ -8,6 +8,6 @@ return array(
     'showTypeName' => 'type',
     'cache'        => '//cache.shareany.com/?f=',
     'cacheRootKey' => 'CodeMommy.GitHubWidget',
-    'cacheVersion' => 1,
+    'cacheVersion' => 2,
     'debug'        => false
 );
