@@ -1,7 +1,7 @@
 {
   "name": "codemommy/githubwidget",
   "version": "0.0.1",
-  "description": "CodeMommy GitHub Widget is a service to show GitHub Widget.",
+  "description": "Service to show GitHub widget",
   "keywords": [
     "CodeMommy",
     "GitHub",

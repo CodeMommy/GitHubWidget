@@ -2,8 +2,7 @@
 
 ## Overview
 
-
-> CodeMommy GitHub Widget is a service to show GitHub Widget.
+> Service to show GitHub widget
 
 Visit [Website](http://www.codemommy.com) to get more information.
 
